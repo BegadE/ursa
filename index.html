@@ -5,13 +5,11 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Color Poll</title>
   <style>
-    :root {
-      --gap: 16px;
-    }
+    :root { --gap: 16px; }
     html, body {
       height: 100%;
       margin: 0;
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
       background: #0b1020;
       color: #fff;
     }
@@ -20,6 +18,16 @@
       display: grid;
       place-items: center;
       padding: 24px;
+    }
+    header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    header img {
+      width: 100px; /* adjust as you like */
+      height: auto;
+      border-radius: 50%;
+      margin-bottom: 10px;
     }
     h1 {
       font-size: 1.25rem;
@@ -54,27 +62,101 @@
       text-align: center;
       opacity: .85;
     }
-    /* Colors */
-    .red    { background: #e11d48; }
-    .blue   { background: #2563eb; }
-    .green  { background: #16a34a; }
-    .yellow { background: #f59e0b; }
-    /* Make text readable on darker tiles */
-    .blue, .red, .green { color: #fff; }
+    .red    { background: #e11d48; color: #fff; }
+    .blue   { background: #2563eb; color: #fff; }
+    .green  { background: #16a34a; color: #fff; }
+    .yellow { background: #f59e0b; color: #000; }
+
+    /* QR button */
+    .qr-button {
+      display: inline-block;
+      background: #fff;
+      color: #000;
+      font-weight: 600;
+      border: none;
+      border-radius: 999px;
+      padding: 10px 20px;
+      margin-top: 20px;
+      text-decoration: none;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+    .qr-modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.75);
+      display: none;
+      justify-content: center;
+      align-items: center;
+    }
+    .qr-modal.active { display: flex; }
+    .qr-box {
+      background: #fff;
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+    }
+    .qr-box img {
+      width: 250px;
+      height: 250px;
+    }
+    .close-btn {
+      background: #e11d48;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      padding: 8px 12px;
+      margin-top: 12px;
+      cursor: pointer;
+    }
   </style>
 </head>
 <body>
   <div class="wrap">
     <main>
-      <h1>Tap a Color</h1>
+      <header>
+        <!-- 💡 Replace 'logo.png' with your actual file (put it in same folder) -->
+        <img src="ursa_logo.png" alt="Logo" />
+        <h1>Tap a Color</h1>
+      </header>
+
       <div class="grid">
         <a class="tile red"    href="color.html?c=%23e11d48">RED</a>
         <a class="tile blue"   href="color.html?c=%232563eb">BLUE</a>
         <a class="tile green"  href="color.html?c=%2316a34a">GREEN</a>
         <a class="tile yellow" href="color.html?c=%23f59e0b">YELLOW</a>
       </div>
-      <p class="note">Tip: you can share this link with students; they just tap a color.</p>
+
+      <!-- QR Button -->
+      <div style="text-align:center;">
+        <button id="showQR" class="qr-button">Show QR Code</button>
+      </div>
+
+      <p class="note">Students can scan the QR to open this page directly.</p>
     </main>
   </div>
+
+  <!-- QR Modal -->
+  <div class="qr-modal" id="qrModal">
+    <div class="qr-box">
+      <img id="qrImage" alt="QR code" />
+      <br>
+      <button class="close-btn" id="closeQR">Close</button>
+    </div>
+  </div>
+
+  <script>
+    const showQR = document.getElementById("showQR");
+    const modal = document.getElementById("qrModal");
+    const qrImg = document.getElementById("qrImage");
+    const closeBtn = document.getElementById("closeQR");
+
+    const siteURL = window.location.href; // current page URL
+    const qrAPI = "https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=" + encodeURIComponent(siteURL);
+    qrImg.src = qrAPI;
+
+    showQR.addEventListener("click", () => modal.classList.add("active"));
+    closeBtn.addEventListener("click", () => modal.classList.remove("active"));
+  </script>
 </body>
 </html>

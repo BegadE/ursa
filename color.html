@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Color</title>
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      overflow: hidden; /* eliminate scroll bounce on mobile */
+      touch-action: manipulation;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+    }
+    .fill {
+      width: 100%;
+      height: 100%;
+    }
+    .ui {
+      position: fixed;
+      top: 12px;
+      left: 12px;
+      right: 12px;
+      display: flex;
+      gap: 10px;
+      justify-content: space-between;
+      pointer-events: none; /* clicks pass through except on buttons */
+    }
+    .buttons { display: flex; gap: 10px; pointer-events: auto; }
+    button, a.btn {
+      appearance: none;
+      border: 0;
+      padding: 10px 14px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.92);
+      color: #111;
+      font-weight: 700;
+      text-decoration: none;
+      box-shadow: 0 6px 20px rgba(0,0,0,.25);
+      -webkit-tap-highlight-color: transparent;
+    }
+    button:active, a.btn:active { transform: translateY(1px); }
+    .spacer { flex: 1; }
+  </style>
+</head>
+<body>
+  <div id="bg" class="fill" role="img" aria-label="Full-screen color"></div>
+
+  <div class="ui" aria-hidden="false">
+    <div class="buttons">
+      <a class="btn" href="index.html" id="back">Back</a>
+      <button id="fs">Fullscreen</button>
+    </div>
+    <div class="spacer"></div>
+  </div>
+
+  <script>
+    // Parse ?c=<color> (hex like %23e11d48 or a CSS color name)
+    const params = new URLSearchParams(location.search);
+    const colorParam = params.get('c') || '#000000';
+    const bg = document.getElementById('bg');
+    bg.style.background = colorParam;
+
+    // Optional: set page title to color for clarity
+    document.title = `Color — ${colorParam}`;
+
+    // Fullscreen toggle (best effort; requires user gesture)
+    const fsBtn = document.getElementById('fs');
+    function isFullscreen() {
+      return document.fullscreenElement || document.webkitFullscreenElement;
+    }
+    async function toggleFullscreen() {
+      try {
+        if (!isFullscreen()) {
+          const el = document.documentElement;
+          if (el.requestFullscreen) await el.requestFullscreen();
+          else if (el.webkitRequestFullscreen) await el.webkitRequestFullscreen();
+          fsBtn.textContent = 'Exit Fullscreen';
+        } else {
+          if (document.exitFullscreen) await document.exitFullscreen();
+          else if (document.webkitExitFullscreen) await document.webkitExitFullscreen();
+          fsBtn.textContent = 'Fullscreen';
+        }
+      } catch (e) {
+        // ignore; some browsers block without a gesture
+      }
+    }
+    fsBtn.addEventListener('click', toggleFullscreen);
+
+    // Ensure UI stays visible on all colors (white pill buttons)
+    // (If you want auto-contrast text, you could compute luminance here.)
+  </script>
+</body>
+</html>

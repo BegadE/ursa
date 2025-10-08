@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Color Poll</title>
+  <style>
+    :root {
+      --gap: 16px;
+    }
+    html, body {
+      height: 100%;
+      margin: 0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+      background: #0b1020;
+      color: #fff;
+    }
+    .wrap {
+      min-height: 100%;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+    }
+    h1 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin: 0 0 16px;
+      text-align: center;
+      opacity: .9;
+    }
+    .grid {
+      width: min(900px, 100%);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--gap);
+    }
+    .tile {
+      display: grid;
+      place-items: center;
+      aspect-ratio: 1/1;
+      border-radius: 20px;
+      text-decoration: none;
+      color: #000;
+      font-weight: 700;
+      font-size: clamp(1.25rem, 6vw, 2rem);
+      box-shadow: 0 10px 30px rgba(0,0,0,.25);
+      transition: transform .08s ease, box-shadow .08s ease, filter .08s ease;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .tile:active { transform: scale(.98); filter: brightness(.95); }
+    .note {
+      margin-top: 16px;
+      font-size: .95rem;
+      text-align: center;
+      opacity: .85;
+    }
+    /* Colors */
+    .red    { background: #e11d48; }
+    .blue   { background: #2563eb; }
+    .green  { background: #16a34a; }
+    .yellow { background: #f59e0b; }
+    /* Make text readable on darker tiles */
+    .blue, .red, .green { color: #fff; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <main>
+      <h1>Tap a Color</h1>
+      <div class="grid">
+        <a class="tile red"    href="color.html?c=%23e11d48">RED</a>
+        <a class="tile blue"   href="color.html?c=%232563eb">BLUE</a>
+        <a class="tile green"  href="color.html?c=%2316a34a">GREEN</a>
+        <a class="tile yellow" href="color.html?c=%23f59e0b">YELLOW</a>
+      </div>
+      <p class="note">Tip: you can share this link with students; they just tap a color.</p>
+    </main>
+  </div>
+</body>
+</html>
